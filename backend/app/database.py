@@ -1,54 +1,16 @@
 import os
 
 from dotenv import load_dotenv
-
 from sqlalchemy import create_engine
-from sqlalchemy.orm import (
-    declarative_base,
-    sessionmaker
-)
-
-
-# ============================================================
-# Load environment variables
-# ============================================================
+from sqlalchemy.orm import declarative_base, sessionmaker
 
 load_dotenv()
 
-
-# ============================================================
-# Database configuration
-# ============================================================
-
-DB_HOST = os.getenv(
-    "DB_HOST",
-    "localhost"
-)
-
-DB_PORT = os.getenv(
-    "DB_PORT",
-    "3306"
-)
-
-DB_NAME = os.getenv(
-    "DB_NAME",
-    "rumor_detection_db"
-)
-
-DB_USER = os.getenv(
-    "DB_USER",
-    "root"
-)
-
-DB_PASSWORD = os.getenv(
-    "DB_PASSWORD",
-    ""
-)
-
-
-# ============================================================
-# MySQL connection URL
-# ============================================================
+DB_HOST = os.getenv("DB_HOST", "localhost")
+DB_PORT = os.getenv("DB_PORT", "3306")
+DB_NAME = os.getenv("DB_NAME", "rumor_detection_db")
+DB_USER = os.getenv("DB_USER", "root")
+DB_PASSWORD = os.getenv("DB_PASSWORD", "")
 
 DATABASE_URL = (
     f"mysql+pymysql://"
@@ -57,21 +19,14 @@ DATABASE_URL = (
     f"/{DB_NAME}"
 )
 
-
-# ============================================================
-# SQLAlchemy engine
-# ============================================================
-
 engine = create_engine(
     DATABASE_URL,
     echo=True,
-    pool_pre_ping=True
+    pool_pre_ping=True,
+    connect_args={
+        "ssl": {}
+    }
 )
-
-
-# ============================================================
-# Database session
-# ============================================================
 
 SessionLocal = sessionmaker(
     autocommit=False,
@@ -79,24 +34,13 @@ SessionLocal = sessionmaker(
     bind=engine
 )
 
-
-# ============================================================
-# Base class
-# ============================================================
-
 Base = declarative_base()
 
 
-# ============================================================
-# Database dependency
-# ============================================================
-
 def get_db():
-
     db = SessionLocal()
 
     try:
         yield db
-
     finally:
         db.close()

@@ -1,3 +1,4 @@
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
@@ -20,13 +21,6 @@ from app.routers.prediction import router as prediction_router
 
 
 # ============================================================
-# Create database tables
-# ============================================================
-
-Base.metadata.create_all(bind=engine)
-
-
-# ============================================================
 # FastAPI Application
 # ============================================================
 
@@ -45,17 +39,11 @@ app.add_middleware(
     CORSMiddleware,
 
     allow_origins=[
-        # ----------------------------------------------------
         # Production Vercel frontend
-        # ----------------------------------------------------
         "https://rumor-detection-system-git-main-demo-176f.vercel.app",
-
-        # Other Vercel deployment
         "https://rumor-detection-system-dgd6zbkrd-demo-176f.vercel.app",
 
-        # ----------------------------------------------------
         # Local development
-        # ----------------------------------------------------
         "http://localhost:5173",
         "http://127.0.0.1:5173",
 
@@ -66,13 +54,8 @@ app.add_middleware(
         "http://127.0.0.1:5176",
     ],
 
-    # Required for JWT Authorization / authenticated requests
     allow_credentials=True,
-
-    # Allow GET, POST, PUT, DELETE, OPTIONS, etc.
     allow_methods=["*"],
-
-    # Allow Content-Type, Authorization, etc.
     allow_headers=["*"],
 )
 
@@ -137,3 +120,20 @@ def database_test():
             "message": "MySQL connection failed",
             "error": str(e),
         }
+
+
+# ============================================================
+# Create database tables
+# ============================================================
+
+@app.on_event("startup")
+def create_database_tables():
+
+    try:
+        Base.metadata.create_all(bind=engine)
+        print("Database tables created successfully.")
+
+    except Exception as e:
+        print("Database table creation failed:")
+        print(str(e))
+
