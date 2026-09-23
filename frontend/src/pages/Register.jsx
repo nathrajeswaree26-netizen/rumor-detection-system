@@ -102,7 +102,7 @@ function Register() {
 
       } else if (error.request) {
         setError(
-          "Cannot connect to the backend. Please check the Railway backend URL."
+          "Cannot connect to the backend. Please check your backend connection."
         );
 
       } else {
