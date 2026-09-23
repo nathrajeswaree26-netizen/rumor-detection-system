@@ -39,7 +39,10 @@ app.add_middleware(
     CORSMiddleware,
 
     allow_origins=[
-        # Production Vercel frontend
+        # Render production frontend
+        "https://rumor-detection-frontend.onrender.com",
+
+        # Old Vercel frontends
         "https://rumor-detection-system-git-main-demo-176f.vercel.app",
         "https://rumor-detection-system-dgd6zbkrd-demo-176f.vercel.app",
 
