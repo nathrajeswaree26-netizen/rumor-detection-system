@@ -1,10 +1,8 @@
 ## 🚀 Live Deployment
 
-### Frontend
-https://rumor-detection-system-git-main-demo-176f.vercel.app/
 
-### Backend API
-https://rumor-detection-system-production.up.railway.app/
+Backend API
+https://rumor-detection-system.onrender.com/
 
-### API Documentation
-https://rumor-detection-system-production.up.railway.app/docs
+API Documentation
+https://rumor-detection-system.onrender.com/docs
